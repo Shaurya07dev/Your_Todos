@@ -32,13 +32,34 @@ function updateAuthUI(user) {
   }
 }
 
+// Track if we're currently fetching to prevent duplicate calls
+let isFetching = false;
+let fetchTimeout = null;
+
+// Debounced fetch function to prevent rapid successive calls
+function debouncedFetchTodos() {
+  if (fetchTimeout) {
+    clearTimeout(fetchTimeout);
+  }
+  fetchTimeout = setTimeout(() => {
+    fetchTodos();
+  }, 100);
+}
+
 // Fetch and render todos for the logged-in user
 async function fetchTodos() {
+  if (isFetching) {
+    console.log('Already fetching todos, skipping...');
+    return;
+  }
+  
+  isFetching = true;
   todoList.innerHTML = '';
   const token = await getToken();
   console.log('Fetching todos with token:', token);
   if (!token) {
     console.log('No token found for fetching todos');
+    isFetching = false;
     return;
   }
   try {
@@ -71,6 +92,8 @@ async function fetchTodos() {
   } catch (err) {
     todoList.innerHTML = '<li class="text-red-500">Error loading todos.</li>';
     console.error(err);
+  } finally {
+    isFetching = false;
   }
 }
 
@@ -104,7 +127,7 @@ addTodoForm.addEventListener('submit', async (e) => {
     }
     const data = await res.json();
     console.log('Todo added successfully:', data);
-    fetchTodos();
+    debouncedFetchTodos();
     addTodoForm.reset();
   } catch (err) {
     alert('Error adding todo');
@@ -125,7 +148,7 @@ window.completeTodo = async (id) => {
       },
       body: JSON.stringify({ completed: true })
     });
-    fetchTodos();
+    debouncedFetchTodos();
   } catch (err) {
     alert('Error completing todo');
     console.error(err);
@@ -141,7 +164,7 @@ window.deleteTodo = async (id) => {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     });
-    fetchTodos();
+    debouncedFetchTodos();
   } catch (err) {
     alert('Error deleting todo');
     console.error(err);
@@ -158,14 +181,26 @@ logoutBtn.addEventListener('click', async () => {
   todoList.innerHTML = '';
 });
 
+// Track if we've already initialized to prevent duplicate calls
+let isInitialized = false;
+
 // Listen for auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
+  console.log('Auth state change:', event, session?.user?.id);
   updateAuthUI(session?.user);
-  if (session?.user) fetchTodos();
+  if (session?.user && event === 'SIGNED_IN') {
+    debouncedFetchTodos();
+  } else if (event === 'SIGNED_OUT') {
+    todoList.innerHTML = '';
+  }
 });
 
 // Initialize auth state on page load
 supabase.auth.getSession().then(({ data: { session } }) => {
-  updateAuthUI(session?.user);
-  if (session?.user) fetchTodos();
+  if (!isInitialized) {
+    isInitialized = true;
+    console.log('Initial session:', session?.user?.id);
+    updateAuthUI(session?.user);
+    if (session?.user) debouncedFetchTodos();
+  }
 });
