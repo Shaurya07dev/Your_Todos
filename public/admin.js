@@ -1,6 +1,12 @@
 const SUPABASE_URL = 'https://nepasrsjsvsfogoqrytp.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lcGFzcnNqc3ZzZm9nb3FyeXRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5NTkyNzMsImV4cCI6MjA3MjUzNTI3M30.uhadmNCP0WlIqnTITm1IoE5Lhi-9gjnGZq3oIO69i3M';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Configure Supabase with proper redirect URL
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    redirectTo: window.location.origin
+  }
+});
 
 const userTable = document.getElementById('user-table');
 
