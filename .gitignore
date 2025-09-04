@@ -4,4 +4,4 @@ node_modules/
 .env.production
 .DS_Store
 *.log
-cursor/mcp.json
+.cursor/mcp.json
