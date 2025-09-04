@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build": "npx @tailwindcss/cli -i ./public/input.css -o ./public/output.css --minify",
+    "build:css": "npx @tailwindcss/cli -i ./public/input.css -o ./public/output.css --minify"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.5",
