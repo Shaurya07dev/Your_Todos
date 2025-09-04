@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todolist App</title>
+  <link href="./output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600">Todolist App</h1>
+    <div>
+      <button id="login-btn" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Login with Google</button>
+      <button id="logout-btn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hidden">Logout</button>
+      <a href="about.html" class="ml-4 text-blue-500 hover:underline">About</a>
+    </div>
+  </nav>
+  <main class="max-w-xl mx-auto mt-8 p-6 bg-white rounded shadow">
+    <form id="add-todo-form" class="flex mb-6">
+      <input type="text" id="todo-title" class="flex-1 border rounded-l px-3 py-2" placeholder="Add a new todo..." required>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r">Add</button>
+    </form>
+    <ul id="todo-list" class="space-y-2">
+      <!-- Todos will be rendered here -->
+    </ul>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

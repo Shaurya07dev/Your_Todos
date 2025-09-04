@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Todolist App</title>
+  <link href="./output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600">Admin Panel</h1>
+    <a href="index.html" class="text-blue-500 hover:underline">Home</a>
+  </nav>
+  <main class="max-w-3xl mx-auto mt-8 p-6 bg-white rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">User Management</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Email</th>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Role</th>
+            <th class="px-4 py-2">Admin</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="user-table">
+          <!-- Users will be rendered here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
